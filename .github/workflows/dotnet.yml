@@ -23,8 +23,6 @@ jobs:
       run: dotnet build -c Release --no-restore
     - name: Test
       run: dotnet test --no-build --verbosity normal
-    - name: tst
-      run: pwd
     - name: Create Artifacts
       uses: actions/upload-artifact@v2
       with:
