@@ -7,7 +7,7 @@ on:
     branches: [ "master" ]
 
 jobs:
-  build:
+  build-win:
 
     runs-on: ubuntu-latest
 
@@ -20,11 +20,53 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
-      run: dotnet build -c Release --no-restore
+      run: dotnet build -c Release --no-restore -r win-x64 --no-self-contained
     - name: Test
       run: dotnet test --no-build --verbosity normal
     - name: Create Artifacts
       uses: actions/upload-artifact@v2
       with:
-        name: Release
+        name: Release-win
+        path: HKMultiInstance/bin/Release/net6.0
+  build-linux:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: 6.0.x
+    - name: Restore dependencies
+      run: dotnet restore
+    - name: Build
+      run: dotnet build -c Release --no-restore -r linux-x64 --no-self-contained
+    - name: Test
+      run: dotnet test --no-build --verbosity normal
+    - name: Create Artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: Release-linux
+        path: HKMultiInstance/bin/Release/net6.0
+  build-osx:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: 6.0.x
+    - name: Restore dependencies
+      run: dotnet restore
+    - name: Build
+      run: dotnet build -c Release --no-restore -r osx-x64 --no-self-contained
+    - name: Test
+      run: dotnet test --no-build --verbosity normal
+    - name: Create Artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: Release-osx
         path: HKMultiInstance/bin/Release/net6.0
